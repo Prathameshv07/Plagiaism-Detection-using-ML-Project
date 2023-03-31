@@ -13,87 +13,117 @@ import nltk
 import re
 import os
 
+
 warnings.filterwarnings("ignore", module='bs4')
 
-
-# Search function
-# The function is used for searching the content over the web.
-
+# This function searches Microsoft Bing search engine for a given query and returns a list of URLs up to a certain number.
 def searchBing(query, num):
-    # URL strutcure for searching over Microsoft Bing search engine.
-
+    
+    # create an empty list to hold the URLs
     urls1 = []
 
+    # construct the URL for the query
     url1 = 'https://www.bing.com/search?q=' + query
+
+    # send a GET request to the URL with a custom user agent header
     page = requests.get(url1, headers={'User-agent': 'Mighty Near'})
+
+    # parse the HTML content of the page using BeautifulSoup
     soup = bs(page.text, 'html.parser')
 
+    # iterate over all the links in the HTML content
     for link in soup.find_all('a'):
+        # get the URL of the link as a string
         url1 = str(link.get('href'))
+
+        # filter out URLs that don't start with 'http' and exclude some specific URLs
         if url1.startswith('http'):
             if not url1.startswith('https://go.m') and not url1.startswith('https://go.m'):
                 urls1.append(url1)
 
+    # return the list of URLs up to the given number
     return urls1[:num]
 
-
+# This function searches Google search engine for a given query and returns a list of URLs up to a certain number.
 def searchGoogle(query, num):
+
+    # create an empty list to hold the URLs
     urls2 = []
 
+    # construct the URL for the query
     url2 = 'https://www.google.com/search?q=' + query
+
+    # send a GET request to the URL with a custom user agent header
     page = requests.get(url2, headers={'User-agent': 'John Doe'})
+
+    # parse the HTML content of the page using BeautifulSoup
     soup = bs(page.text, 'html.parser')
 
+    # iterate over all the links in the HTML content
     for link in soup.find_all('a'):
+        # get the URL of the link as a string
         url2 = str(link.get('href'))
+
+        # filter out URLs that don't start with 'http' and exclude some specific URLs
         if url2.startswith('http'):
             if not url2.startswith('https://go.m') and not url2.startswith('https://go.m') and not url2.startswith(
                     'https://maps.google'):
                 urls2.append(url2)
 
+    # return the list of URLs up to the given number
     return urls2[:num]
 
 
-# Extract Text function
-# The function is used for extracting the relevant text from the web.
-
+# This function takes a URL as input and extracts the text content from the page.
+# The text content is extracted using BeautifulSoup library and then returned.
 def extractText(url):
     page = requests.get(url)
     soup = bs(page.text, 'html.parser')
     return soup.get_text()
 
-
+# The following two lines download the stopwords and punkt from the nltk library which are used for text preprocessing.
 nltk.download('stopwords')
 nltk.download('punkt')
 
+# This variable initializes a set of stopwords which are commonly occurring words that do not provide useful information.
 stop_words = set(nltk.corpus.stopwords.words('english'))
 
 
-# Function for generating tokens
-# Returns words from a string passed as input.
-
+# This function takes a string as input and removes stopwords from it using nltk library.
+# The string is first tokenized into words and then stop words are removed using list comprehension.
 def purifyText(string):
     words = nltk.word_tokenize(string)
     return (" ".join([word for word in words if word not in stop_words]))
 
 
-# Function for matching results over the web based on the text.
+'''
+A function to verify the text against the web sources and return the matching sites.
 
+Parameters:
+string: The text string to be verified against web sources
+results_per_sentence: Number of results per sentence to retrieve from web sources
+'''
 def webVerify(string, results_per_sentence):
+
+    # Tokenize the string into sentences using nltk.sent_tokenize
     sentences = nltk.sent_tokenize(string)
+    # List to store the matching sites
     matching_sites = []
+    # Search the web using the searchBing function for the entire string and each sentence
     for url in searchBing(query=string, num=results_per_sentence):
         matching_sites.append(url)
     for sentence in sentences:
         for url in searchBing(query=sentence, num=results_per_sentence):
             matching_sites.append(url)
 
+    # Search the web using the searchGoogle function for the entire string and each sentence
     for url in searchGoogle(query=string, num=results_per_sentence):
         matching_sites.append(url)
     for sentence in sentences:
         for url in searchGoogle(query=sentence, num=results_per_sentence):
             matching_sites.append(url)
 
+    # Return a list of unique matching sites using list(set())
     return (list(set(matching_sites)))
 
 
@@ -101,6 +131,8 @@ def webVerify(string, results_per_sentence):
 # The function calculates and compares instances to get a ratio for them.
 
 def similarity(str1, str2):
+    # Returns a ratio of similarity between two strings.
+    # Uses the SequenceMatcher method from the difflib module.
     return (SequenceMatcher(None, str1, str2).ratio()) * 100
 
 
@@ -108,35 +140,42 @@ def similarity(str1, str2):
 # Passed input text or file text as parameters.
 
 def report(text):
+    # Generates a report of matching websites and their similarity scores to the input text.
     matching_sites = webVerify(purifyText(text), 2)
     matches = {}
 
+    # Iterate through each matching site and calculate the similarity score with the input text.
     for i in range(len(matching_sites)):
         matches[matching_sites[i]] = similarity(text, extractText(matching_sites[i]))
 
+    # Sort the matches dictionary by descending similarity score.
     matches = {k: v for k, v in sorted(matches.items(), key=lambda item: item[1], reverse=True)}
 
+    # Calculate the total similarity score.
     sum = 0
     for k, v in matches.items():
         sum += v
     matches["TOTAL SIMILARITY"] = sum
 
+    # Return the matches dictionary with similarity scores and the total similarity score.
     return matches
 
 
 # Return Table function
 # Used for returning data-frame to the final report page.
+# Define a function to return a HTML table from a dictionary
 def returnTable(dictionary):
     df = pd.DataFrame({'Similarity (%)': dictionary})
     # df = df.fillna(' ').T
     # df = df.transpose()
     return df.to_html(classes="table ")
 
-
+# Set up upload folder and allowed extensions
 path = os.getcwd()
 UPLOAD_FOLDER = os.path.join(path, 'uploads')
 ALLOWED_EXTENSIONS = {'pdf'}
 
+# Create a Flask app instance and configure upload folder and secret key
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.add_url_rule(
@@ -145,7 +184,7 @@ app.add_url_rule(
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 app.config['SECRET_KEY'] = 'super secret key'
 
-
+# Define a function to check if a file is allowed based on its extension
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -234,13 +273,18 @@ def plagiarism(name):
                 f = open("word.txt", "r")
                 inputan_mentah += f.read()
             inputan += inputan_mentah.replace("\n", " ").split(". ")
+            # This code takes input from a web page and performs plagiarism detection using Google search API.
+            # Loop through each sentence in inputan
             for i in range(len(inputan)):
+                # Form a search query from the sentence
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
+                # Search for the query in Google and store the links in a list
                 for j in range(len(list(search(query, tld=domain, num=10, stop=10, pause=2)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
                     hasil_link.append(list(search(query, tld=domain, num=10, stop=10, pause=2))[j])
+            # Check for links that are blocked and remove them from the list        
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
@@ -254,9 +298,12 @@ def plagiarism(name):
                             hasil_link_final.append(hasil_link[j])
                             break
                         break
+
+            # Calculate plagiarism percentage
             count = len(inputan)
             count_hasil = len(hasil_link_final)
             hasil_persen += (count_hasil / count) * 100
+            # Store final links in a list
             for i in range(len(hasil_link_final)):
                 link_output.append(hasil_link_final[i])
         else:
@@ -471,48 +518,51 @@ def index1():
 
     return render_template("f2f.html")
 
-
+# This function is used to compute the Longest Prefix Suffix (LPS) array for a given pattern.
 def computeLPSArray(pat, M, lps):
-    len = 0
-    lps[0]
+    len = 0 # Initialize length of the previous longest prefix suffix
+    lps[0] # lps[0] is always 0
     i = 1
+    # Loop to fill LPS array
     while i < M:
-        if pat[i] == pat[len]:
+        if pat[i] == pat[len]: # If the characters match, increment length of longest prefix suffix
             len += 1
             lps[i] = len
             i += 1
-        else:
-            if len != 0:
-                len = lps[len - 1]
-            else:
-                lps[i] = 0
+        else: # If characters do not match
+            if len != 0: # Check if the previous character had a longest prefix suffix
+                len = lps[len - 1] # Set length to the longest prefix suffix of the previous character
+            else: # If the previous character did not have a longest prefix suffix
+                lps[i] = 0 # Set longest prefix suffix of the current character to 0
                 i += 1
 
 
 def KMPSearch(pat, text, p):
-    M = len(pat)
-    N = len(text)
-    lps = [0] * M
-    j = 0
+    M = len(pat) # length of the pattern
+    N = len(text) # length of the text
+    lps = [0] * M # create a list to store the longest proper suffix
+    j = 0 # index for pattern
+
+    # compute the longest proper suffix
     computeLPSArray(pat, M, lps)
 
-    i = 0
+    i = 0 # index for text
     while i < N:
-        if pat[j].lower() == text[i].lower():
-            i += 1
-            j += 1
+        if pat[j].lower() == text[i].lower(): # if the characters match
+            i += 1 # increment index of text
+            j += 1 # increment index of pattern
 
-        if j == M:
-            p += 1
-            j = lps[j - 1]
-            break
+        if j == M: # if pattern is found
+            p += 1 # increment count of patterns found
+            j = lps[j - 1] # reset index of pattern
+            break # exit the loop
 
-        elif i < N and pat[j].lower() != text[i].lower():
-            if j != 0:
-                j = lps[j - 1]
+        elif i < N and pat[j].lower() != text[i].lower(): # if characters don't match
+            if j != 0: # if not at the beginning of pattern
+                j = lps[j - 1]  # reset index of pattern to previous character
             else:
-                i += 1
-    return p
+                i += 1 # increment index of text
+    return p # return the count of patterns found
 
 
 @app.route('/f2f_kmp/onRunF2F', methods=['GET', 'POST'])
