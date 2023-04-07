@@ -170,7 +170,7 @@ server {
 To connect the Gunicorn socket to Nginx, you can specify the proxy_pass directive in your Nginx configuration file to point to the Unix socket path. For example, if your Gunicorn socket is located at /run/plagPro.sock, you can add the following line to your Nginx configuration file:
 
 ```bash
-proxy_pass http://unix:/run/plagPro.sock;  **//for ubuntu it will be /home/ubuntu/plagPro**
+proxy_pass http://unix:/run/plagPro.sock;  //for ubuntu it will be /home/ubuntu/plagPro
 ```
 
 Make sure to replace any existing proxy_pass directive that points to a network socket. After making the changes, reload Nginx to apply the new configuration:
