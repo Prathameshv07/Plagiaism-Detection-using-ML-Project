@@ -77,7 +77,7 @@ Service — To specify user/group we want to run this service after. Also some i
 Install — tells systemd at which moment during boot process this service should start.
 With that said, create an unit file in the /etc/systemd/system directory
 	
-Create service (you service name instead of **`plagPro`**)
+Create service (your service name instead of **`plagPro`**)
 
 ```bash
 sudo nano /etc/systemd/system/plagPro.service
