@@ -53,7 +53,7 @@ python app.py
 ```
 ## Run Gunicorn WSGI server to serve the Flask Application through nginx network configuration, later in this section we will also see about configuration of nginx through nginx socket.
 
-### Note: If you have more then 1 URL (too many) in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf later in this section.
+### Note: If you have more then 1 URL (also called as sub-directory of an url) in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf later in this section.
 
 When you “run” flask, you are actually running Werkzeug’s development WSGI server, which forward requests from a web server.
 Since Werkzeug is only for development, we have to use Gunicorn, which is a production-ready WSGI server, to serve our application.
