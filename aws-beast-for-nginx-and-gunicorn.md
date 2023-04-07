@@ -140,7 +140,7 @@ sudo systemctl restart nginx
 ```
 Tada! Our application is up!
 
-### Note: Now configuring more than 1 URL (too many) in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf later in this section.
+### Note: Now configuring more than 1 URL in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf later in this section.
 
 ```bash
 server {
