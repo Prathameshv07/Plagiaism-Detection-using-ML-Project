@@ -13,7 +13,7 @@ sudo apt-get install python3-venv
 ```
 Activate the new virtual environment in a new directory
 
-Create directory (you directory name instead of **`plagPro`**)
+Create directory (your directory name instead of **`plagPro`**)
 ```bash
 mkdir plagPro
 cd plagPro
@@ -51,7 +51,7 @@ Verify if it works by running
 ```bash
 python app.py
 ```
-## Run Gunicorn WSGI server to serve the Flask Application through nginx network configuration, later in this section we will also se about configuration of nginx through nginx socket.
+## Run Gunicorn WSGI server to serve the Flask Application through nginx network configuration, later in this section we will also see about configuration of nginx through nginx socket.
 
 ### Note: If you have more then 1 URL (too many) in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf later in this section.
 
