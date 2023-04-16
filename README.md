@@ -1,4 +1,4 @@
-# Sem---VI-Project
+# Plagiaism Detection using ML-Project
 **Project done in Sem - VI (TCSC)**
 
 This project basically gets the text from web page text-box which is then formated where blank space is replaced by dot and then it is futher sent to query with the help of googlesearch package to check whether we found similarity between our text and the internet. If we found similarity the similar word are shown in another text box and it also does calculate the percentage of the similar word which are shown in another text box and we can also generate report on similar word found on the internet with specificing how many words are copied from which website with there percentage. 
