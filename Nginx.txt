@@ -1,0 +1,105 @@
+To configure your project links in Nginx and Gunicorn, you will need to modify your Nginx configuration file and Gunicorn service file as follows:
+
+1. Nginx Configuration File (/etc/nginx/sites-available/default)
+
+```
+
+server {
+
+    listen 80;
+
+    server_name localhost;
+
+    location / {
+
+        proxy_pass http://127.0.0.1:8000;
+
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+    }
+
+    location /plagiarism/ {
+
+        proxy_pass http://127.0.0.1:8000;
+
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+    }
+
+    location /report {
+
+        proxy_pass http://127.0.0.1:8000;
+
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+    }
+
+    location /f2f_kmp {
+
+        proxy_pass http://127.0.0.1:8000;
+
+        proxy_set_header Host $host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+    }
+
+}
+
+```
+
+2. Gunicorn Service File (/etc/systemd/system/plagPro.service)
+
+```
+
+[Unit]
+
+Description=Gunicorn instance to serve plagPro
+
+After=network.target
+
+[Service]
+
+User=ubuntu
+
+Group=www-data
+
+WorkingDirectory=/home/ubuntu/plagPro
+
+Environment="PATH=/home/ubuntu/plagPro/venv/bin"
+
+ExecStart=/home/ubuntu/plagPro/venv/bin/gunicorn --workers 3 --bind unix:/run/plagPro.sock plagPro.wsgi:app
+
+[Install]
+
+WantedBy=multi-user.target
+
+```
+
+Once you have modified the Nginx configuration and Gunicorn service files, you can restart Nginx and Gunicorn using the following commands:
+
+```
+
+sudo systemctl restart nginx
+
+sudo systemctl restart plagPro
+
+```
+
+With these changes, your project should be accessible at the following URLs:
+
+1. Plagiarism Homepage: http://localhost/
+
+2. Plagiarism Result: http://localhost/plagiarism/<name>
+
+3. Plagiarism Result with website's url from where it is copied: http://localhost/report
+
+4. Plagiarism File to File comparison page: http://localhost/f2f_kmp
+
+5. Plagiarism File to File comparison Result: http://localhost/f2f_kmp/onRunF2F
