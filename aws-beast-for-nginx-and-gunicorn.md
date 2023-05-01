@@ -80,7 +80,7 @@ With that said, create an unit file in the /etc/systemd/system directory
 Create service (your service name instead of **`plagPro`**)
 
 ```bash
-sudo nano /etc/systemd/system/plagPro.service
+sudo vi /etc/systemd/system/plagPro.service
 ```
 Then add this into the file.
 ```bash
@@ -120,7 +120,7 @@ sudo systemctl enable nginx
 ```
 Edit the default file in the sites-available folder.
 ```bash
-sudo nano /etc/nginx/sites-available/default
+sudo vi /etc/nginx/sites-available/default
 ```
 Add the following code at the top of the file (below the default comments)
 ```bash
