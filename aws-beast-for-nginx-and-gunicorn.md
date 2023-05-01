@@ -26,7 +26,7 @@ Activate the virtual environment
 ```bash
 source venv/bin/activate
 ```
-Install Flask
+Install **Flask** _OR_ your own **Requirements**
 ```bash
 pip install Flask
       OR
