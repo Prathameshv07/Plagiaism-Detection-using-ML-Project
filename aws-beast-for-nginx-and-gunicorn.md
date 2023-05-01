@@ -143,24 +143,42 @@ Tada! Our application is up!
 ### Note: Now configuring more than 1 URL in your website then you might have to explicilty define every url in the nginx/etc/nginx/sites-available/default OR /etc/nginx/nginx.conf.
 
 ```bash
+upstream plagPro {
+    server 127.0.0.1:8000;
+}
+	
 server {
     listen 80;
     server_name localhost;
 
     location / {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://plagPro;
+	proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 
-    location /plagiarism<name> {
-        proxy_pass http://127.0.0.1:8000;
+    location /plagiarism {
+        proxy_pass http://plagPro/plagiarism;
+	proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 
     location /report {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://plagPro/report;
+	proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 
     location /f2f_kmp {
-        proxy_pass http://127.0.0.1:8000;
+        proxy_pass http://plagPro/f2f_kmp;
+	proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    
+    location /f2f_kmp/onRunF2F {
+        proxy_pass http://plagPro/f2f_kmp/onRunF2F;
+	proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
     }
 }
 ```
