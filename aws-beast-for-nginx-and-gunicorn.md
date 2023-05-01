@@ -29,6 +29,8 @@ source venv/bin/activate
 Install Flask
 ```bash
 pip install Flask
+      OR
+pip install -r requirements.txt
 ```
 Create a Simple Flask API
 ```bash
