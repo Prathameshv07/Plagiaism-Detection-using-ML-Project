@@ -16,6 +16,11 @@ import os
 
 warnings.filterwarnings("ignore", module='bs4')
 
+# The following two lines download the stopwords and punkt from the nltk library which are used for text preprocessing.
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('punkt_tab')
+
 # This function searches Microsoft Bing search engine for a given query and returns a list of URLs up to a certain number.
 def searchBing(query, num):
     
@@ -80,10 +85,6 @@ def extractText(url):
     page = requests.get(url)
     soup = bs(page.text, 'html.parser')
     return soup.get_text()
-
-# The following two lines download the stopwords and punkt from the nltk library which are used for text preprocessing.
-nltk.download('stopwords')
-nltk.download('punkt')
 
 # This variable initializes a set of stopwords which are commonly occurring words that do not provide useful information.
 stop_words = set(nltk.corpus.stopwords.words('english'))
@@ -279,11 +280,11 @@ def plagiarism(name):
                 # Form a search query from the sentence
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
                 # Search for the query in Google and store the links in a list
-                for j in range(len(list(search(query, tld=domain, num=10, stop=10, pause=2)))):
+                for j in range(len(list(search(query, num_results=10)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, tld=domain, num=10, stop=10, pause=2))[j])
+                    hasil_link.append(list(search(query, num_results=10))[j])
             # Check for links that are blocked and remove them from the list        
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
@@ -310,11 +311,11 @@ def plagiarism(name):
             inputan += text.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, tld=domain, num=10, stop=10, pause=2)))):
+                for j in range(len(list(search(query, num_results=10)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, tld=domain, num=10, stop=10, pause=2))[j])
+                    hasil_link.append(list(search(query, num_results=10))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
@@ -343,11 +344,11 @@ def plagiarism(name):
             inputan += inputan_mentah.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, tld=domain, num=10, stop=10, pause=2)))):
+                for j in range(len(list(search(query, num_results=10)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, tld=domain, num=10, stop=10, pause=2))[j])
+                    hasil_link.append(list(search(query, num_results=10))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
@@ -379,11 +380,11 @@ def plagiarism(name):
             inputan += text.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, tld=domain, num=10, stop=10, pause=2)))):
+                for j in range(len(list(search(query, num_results=10)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, tld=domain, num=10, stop=10, pause=2))[j])
+                    hasil_link.append(list(search(query, num_results=10))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
