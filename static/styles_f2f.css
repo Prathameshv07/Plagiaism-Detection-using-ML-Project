@@ -1,3 +1,4 @@
-.inline-div {
-	display:inline-block;
+textarea, input[type="file"] {
+    width: 100%;
+    max-width: 500px;  /* Adjust this value if needed */
 }
