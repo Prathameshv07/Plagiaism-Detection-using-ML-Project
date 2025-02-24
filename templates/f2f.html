@@ -4,60 +4,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plagiarsm Detection</title>    
+    <title>Plagiarism Detection</title>    
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_f2f.css') }}">
-    <link rel="stylesheet" type="text/css" href="styles_f2f.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 </head>
-<nav class="navbar navbar-expand-lg bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand text-light">Compare F2F</a>
-          <a class="navbar-brand text-light" href="/">Plagiarism Detection using ML</a>
-        </div>
-      </nav>
 
 <body style="padding-bottom: 200px;">
-    <div class="inline-div">
-    <h2 align="center" style=" margin-left: 17px; margin-top: 20px; margin-bottom: 50px;"> Source</h2>      
-      <form method=post enctype=multipart/form-data>        
-        <div class="form-group">
-          <div class="d-flex justify-content-center">
-            <textarea name="root_text_from_html" class="form-control rounded-top shadow bg-white rounded" id="textArea1"
-              rows="10" placeholder="Input your text here..." style="width: 525px; margin-left: 55px;"></textarea>
-          </div>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light">Compare F2F</a>
+            <a class="navbar-brand text-light" href="/">Plagiarism Detection using ML</a>
         </div>
-      <div class="d-flex justify-content-center">
-        <input name="root_file_from_html" accept=".doc, .docx,.txt,.pdf" class="form-control form-control-md h-25 d-flex justify-content-center shadow bg-white" id="formFileLg1" type="file" style="border-radius: 10px; margin-left: 50.5px; width: 270px; margin-top: 20px; margin-bottom: 20px;">
-      </div> 
-      </div>
+    </nav>
 
-      <div class="inline-div">
-      <h2 align="center" style=" margin-right: -100px; margin-top: 20px; margin-bottom: 50px;"> Target</h2>
-        <div class="form-group">
-          <div class="d-flex justify-content-center">
-            <textarea name="plag_text_from_html" class="form-control rounded-top shadow bg-white rounded" id="textArea2"
-              rows="10" placeholder="Input your text here..." style="width: 525px; margin-left: 96px;"></textarea>
-          </div>
-        </div>
-      <div class="d-flex justify-content-center">
-        <input name="plag_file_from_html" accept=".doc, .docx,.txt,.pdf" class="form-control form-control-md h-25 d-flex justify-content-center shadow bg-white" id="formFileLg2" type="file" style="border-radius: 10px; margin-right: -125.5px; width: 270px; margin-top: 20px; margin-bottom: 20px;">
-      </div>
-      </div>
-      <br><br><br><br>
-      <div class="d-flex justify-content-center">
-        <button type="Submit" formaction="/f2f_kmp/onRunF2F" class="btn btn-dark" style="border-radius: 15px; width: 220px; margin-right: 20px; height: 45px;"><i class="bi bi-search"></i> Check Plagiarism</button>
-      </div>
-      </form>
-      <div style="margin-top: 80px;">
-        <h1 align="center">Result</h1>
-        <div style="padding-bottom: 30px" class="container">
-            <div class="col d-flex justify-content-center">
-                <div class="p-3 border bg-dark text-light text-center" style="width: 180px; border-radius: 15px;">Plagiarsm : {{ F2F_value | safe  }}</div>
+    <div class="container mt-5">
+        <h2 class="text-center">Compare Two Documents</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row justify-content-center">
+                <!-- Source Column -->
+                <div class="col-md-5 text-center">
+                    <h4>Source</h4>
+                    <textarea name="root_text_from_html" class="form-control" rows="5" placeholder="Enter source text..."></textarea>
+                    <input name="root_file_from_html" accept=".doc, .docx,.txt,.pdf" class="form-control mt-3" type="file">
+                </div>
+
+                <!-- Target Column -->
+                <div class="col-md-5 text-center">
+                    <h4>Target</h4>
+                    <textarea name="plag_text_from_html" class="form-control" rows="5" placeholder="Enter target text..."></textarea>
+                    <input name="plag_file_from_html" accept=".doc, .docx,.txt,.pdf" class="form-control mt-3" type="file">
+                </div>
+            </div>
+
+            <!-- Check Plagiarism Button -->
+            <div class="text-center mt-4">
+                <button type="Submit" formaction="/f2f_kmp/onRunF2F" class="btn btn-dark btn-lg">
+                    <i class="bi bi-search"></i> Check Plagiarism
+                </button>
+            </div>
+        </form>
+
+        <!-- Plagiarism Result -->
+        <div class="text-center mt-5">
+            <h3>Result</h3>
+            <div class="border bg-dark text-light p-3 d-inline-block rounded">
+                Plagiarism: {{ F2F_value | safe }}
             </div>
         </div>
     </div>
-      </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
