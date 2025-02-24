@@ -280,11 +280,11 @@ def plagiarism(name):
                 # Form a search query from the sentence
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
                 # Search for the query in Google and store the links in a list
-                for j in range(len(list(search(query, num_results=10)))):
+                for j in range(len(list(search(query, num_results=10, sleep_interval=2)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, num_results=10))[j])
+                    hasil_link.append(list(search(query, num_results=10, sleep_interval=2))[j])
             # Check for links that are blocked and remove them from the list        
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
@@ -311,11 +311,11 @@ def plagiarism(name):
             inputan += text.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, num_results=10)))):
+                for j in range(len(list(search(query, num_results=10, sleep_interval=2)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, num_results=10))[j])
+                    hasil_link.append(list(search(query, num_results=10, sleep_interval=2))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
@@ -344,11 +344,11 @@ def plagiarism(name):
             inputan += inputan_mentah.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, num_results=10)))):
+                for j in range(len(list(search(query, num_results=10, sleep_interval=2)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, num_results=10))[j])
+                    hasil_link.append(list(search(query, num_results=10, sleep_interval=2))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
@@ -380,11 +380,11 @@ def plagiarism(name):
             inputan += text.replace("\n", " ").split(". ")
             for i in range(len(inputan)):
                 query = '"' + inputan[i].strip().replace(".", "").replace('"', "'") + '"'
-                for j in range(len(list(search(query, num_results=10)))):
+                for j in range(len(list(search(query, num_results=10, sleep_interval=2)))):
                     if i != j:
                         continue
                     hasil_plagiarism.append(inputan[i])
-                    hasil_link.append(list(search(query, num_results=10))[j])
+                    hasil_link.append(list(search(query, num_results=10, sleep_interval=2))[j])
             for i in range(len(hasil_plagiarism)):
                 for j in range(len(hasil_link)):
                     if i != j:
